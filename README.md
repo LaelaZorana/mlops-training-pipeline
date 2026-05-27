@@ -154,10 +154,28 @@ mlops-training-pipeline/
 
 ---
 
+## W&B Experiment Tracking
+
+Training runs and experiment comparisons are published at [wandb.ai/laelazorana](https://wandb.ai/laelazorana).
+
+The `wandb_demo.py` script runs a 3-experiment learning rate sweep (1e-3, 1e-4, 5e-4) on a ResNet-18 / CIFAR-10 setup, logging `train_loss`, `val_loss`, `accuracy`, `samples_per_sec`, and `learning_rate` per epoch.
+
+To reproduce the demo runs:
+
+```bash
+pip install wandb
+wandb login        # enter your API key from wandb.ai/settings
+python wandb_demo.py
+```
+
+Runs appear at: `https://wandb.ai/laelazorana/mlops-training-pipeline-demo`
+
+---
+
 ## License
 
 MIT — Laela Zorana
 
 ---
 
-**Links:** [GitHub](https://github.com/LaelaZorana) · [HuggingFace](https://huggingface.co/LaelaZ) · [Kaggle](https://www.kaggle.com/laelazorana)
+**Links:** [GitHub](https://github.com/LaelaZorana) · [HuggingFace](https://huggingface.co/LaelaZ) · [Kaggle](https://www.kaggle.com/laelazorana) · [W&B](https://wandb.ai/laelazorana)
