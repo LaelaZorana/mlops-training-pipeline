@@ -72,18 +72,18 @@ def cmd_train(args):
 
     history = trainer.fit(train_loader, val_loader, epochs=epochs)
 
-    for i, epoch in enumerate(history.epochs):
+    for i, epoch in enumerate(history.train_results):
         tracker.log_metrics(
-            {"train_loss": epoch.loss, "val_loss": epoch.val_loss,
+            {"train_loss": epoch.loss, "accuracy": epoch.accuracy,
              "samples_per_sec": epoch.samples_per_sec},
             step=i,
         )
         print(f"  Epoch {i+1}/{epochs} — loss: {epoch.loss:.4f} | "
-              f"val_loss: {epoch.val_loss:.4f} | {epoch.samples_per_sec:.0f} samples/sec")
+              f"acc: {epoch.accuracy:.4f} | {epoch.samples_per_sec:.0f} samples/sec")
 
     tracker.end_run()
     run = tracker.get_run("cli_train")
-    print(f"\n✓ Training complete. Run logged to ./experiments/{run.run_id}.jsonl")
+    print(f"\n✓ Training complete. Run logged to ./experiments/{run.name}.jsonl")
 
 
 def cmd_evaluate(args):
@@ -171,7 +171,7 @@ def main():
 
     # train
     p_train = subparsers.add_parser("train", help="Train from a YAML config")
-    p_train.add_argument("--config", required=True, help="Path to YAML config file")
+    p_train.add_argument("--config", default="demo", help="Path to YAML config file (default: demo mode with synthetic data)")
 
     # evaluate
     p_eval = subparsers.add_parser("evaluate", help="Evaluate a HuggingFace model")
