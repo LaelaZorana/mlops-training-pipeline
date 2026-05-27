@@ -13,28 +13,77 @@ import argparse
 
 
 def cmd_train(args):
-    """Train a model from a YAML config file."""
-    import yaml
-
+    """Train a model from a YAML config file (or demo mode without config)."""
     try:
-        with open(args.config) as f:
-            config = yaml.safe_load(f)
-    except FileNotFoundError:
-        print(f"Config file not found: {args.config}")
-        sys.exit(1)
+        import torch
+        import torch.nn as nn
     except ImportError:
-        print("PyYAML not installed. pip install pyyaml")
+        print("PyTorch not installed. pip install torch")
         sys.exit(1)
 
-    print(f"Training config: {args.config}")
-    print(f"Config contents: {config}")
+    from pipeline.trainer import Trainer
+    from pipeline.experiment_tracker import ExperimentTracker
 
-    # In a real workflow: build model, dataloaders, trainer from config
-    # For now, print the config and indicate what would happen
-    print("\nTo use this CLI:")
-    print("  1. Define your model/dataset/training config in a YAML file")
-    print("  2. Import and instantiate Trainer from pipeline.trainer")
-    print("  3. Call trainer.fit(train_loader, val_loader, epochs=config['epochs'])")
+    # Load config if provided, otherwise use defaults
+    config = {}
+    if args.config != "demo":
+        try:
+            import yaml
+            with open(args.config) as f:
+                config = yaml.safe_load(f) or {}
+        except FileNotFoundError:
+            print(f"Config file not found: {args.config}. Running demo with synthetic data.")
+        except ImportError:
+            print("PyYAML not installed — running demo mode. pip install pyyaml for config support.")
+
+    epochs = config.get("epochs", 3)
+    lr = config.get("lr", 1e-3)
+    batch_size = config.get("batch_size", 32)
+    hidden_size = config.get("hidden_size", 64)
+    input_size = config.get("input_size", 16)
+
+    print(f"Training config: epochs={epochs}, lr={lr}, batch_size={batch_size}")
+
+    # Build a simple demo model (linear regression on synthetic data)
+    model = nn.Sequential(
+        nn.Linear(input_size, hidden_size),
+        nn.ReLU(),
+        nn.Linear(hidden_size, 1),
+    )
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+    loss_fn = nn.MSELoss()
+
+    # Synthetic dataset
+    X = torch.randn(200, input_size)
+    y = torch.randn(200, 1)
+    dataset = torch.utils.data.TensorDataset(X, y)
+    train_size = int(0.8 * len(dataset))
+    val_size = len(dataset) - train_size
+    train_ds, val_ds = torch.utils.data.random_split(dataset, [train_size, val_size])
+    train_loader = torch.utils.data.DataLoader(train_ds, batch_size=batch_size, shuffle=True)
+    val_loader = torch.utils.data.DataLoader(val_ds, batch_size=batch_size)
+
+    # Track experiment
+    tracker = ExperimentTracker(log_dir="./experiments")
+    tracker.start_run("cli_train", config=config)
+
+    trainer = Trainer(model, optimizer, loss_fn)
+    print(f"\nStarting training for {epochs} epoch(s)...\n")
+
+    history = trainer.fit(train_loader, val_loader, epochs=epochs)
+
+    for i, epoch in enumerate(history.epochs):
+        tracker.log_metrics(
+            {"train_loss": epoch.loss, "val_loss": epoch.val_loss,
+             "samples_per_sec": epoch.samples_per_sec},
+            step=i,
+        )
+        print(f"  Epoch {i+1}/{epochs} — loss: {epoch.loss:.4f} | "
+              f"val_loss: {epoch.val_loss:.4f} | {epoch.samples_per_sec:.0f} samples/sec")
+
+    tracker.end_run()
+    run = tracker.get_run("cli_train")
+    print(f"\n✓ Training complete. Run logged to ./experiments/{run.run_id}.jsonl")
 
 
 def cmd_evaluate(args):
