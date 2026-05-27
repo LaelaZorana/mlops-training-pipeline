@@ -154,6 +154,23 @@ mlops-training-pipeline/
 
 ---
 
+## DagsHub / MLflow Experiment Tracking
+
+Experiments tracked at [dagshub.com/laelazorana/mlops-training-pipeline](https://dagshub.com/laelazorana/mlops-training-pipeline)
+
+```bash
+pip install dagshub mlflow
+python dagshub_demo.py
+```
+
+The `dagshub_demo.py` script runs the same 3-experiment LR sweep (1e-3, 1e-4, 5e-4), logging `train_loss`, `val_loss`, `val_accuracy`, `samples_per_sec`, and `learning_rate` per epoch via MLflow. Activate DagsHub remote tracking by uncommenting the two `dagshub` lines at the top of the script.
+
+MLflow tracking server: `https://dagshub.com/laelazorana/mlops-training-pipeline.mlflow`
+
+Without a DagsHub account, the script falls back to local MLflow — view with `mlflow ui --port 5000`.
+
+---
+
 ## W&B Experiment Tracking
 
 Training runs and experiment comparisons are published at [wandb.ai/laelazorana](https://wandb.ai/laelazorana).
@@ -178,4 +195,4 @@ MIT — Laela Zorana
 
 ---
 
-**Links:** [GitHub](https://github.com/LaelaZorana) · [HuggingFace](https://huggingface.co/LaelaZ) · [Kaggle](https://www.kaggle.com/laelazorana) · [W&B](https://wandb.ai/laelazorana)
+**Links:** [GitHub](https://github.com/LaelaZorana) · [HuggingFace](https://huggingface.co/LaelaZ) · [Kaggle](https://www.kaggle.com/laelazorana) · [W&B](https://wandb.ai/laelazorana) · [DagsHub](https://dagshub.com/laelazorana)
