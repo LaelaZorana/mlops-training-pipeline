@@ -203,7 +203,7 @@ def main() -> None:
         print(f"Tracking URI: {tracking_uri}  [DagsHub ACTIVE]")
         print("Results: https://dagshub.com/laelazorana/mlops-training-pipeline.mlflow\n")
     else:
-        print(f"Tracking URI: {tracking_uri}  [local — activate DagsHub above]")
+        print(f"Tracking URI: {tracking_uri}  [local, activate DagsHub above]")
         print("View locally: mlflow ui --port 5000\n")
 
     mlflow.set_experiment(EXPERIMENT_NAME)

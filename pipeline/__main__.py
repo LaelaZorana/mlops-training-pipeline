@@ -34,7 +34,7 @@ def cmd_train(args):
         except FileNotFoundError:
             print(f"Config file not found: {args.config}. Running demo with synthetic data.")
         except ImportError:
-            print("PyYAML not installed — running demo mode. pip install pyyaml for config support.")
+            print("PyYAML not installed. Running demo mode. pip install pyyaml for config support.")
 
     epochs = config.get("epochs", 3)
     lr = config.get("lr", 1e-3)
@@ -78,7 +78,7 @@ def cmd_train(args):
              "samples_per_sec": epoch.samples_per_sec},
             step=i,
         )
-        print(f"  Epoch {i+1}/{epochs} — loss: {epoch.loss:.4f} | "
+        print(f"  Epoch {i+1}/{epochs}, loss: {epoch.loss:.4f} | "
               f"acc: {epoch.accuracy:.4f} | {epoch.samples_per_sec:.0f} samples/sec")
 
     tracker.end_run()
