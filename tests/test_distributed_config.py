@@ -1,5 +1,5 @@
 """
-Tests for pipeline.distributed_config — DistributedConfig, DistributedStrategy, etc.
+Tests for pipeline.distributed_config: DistributedConfig, DistributedStrategy, etc.
 """
 
 import pytest

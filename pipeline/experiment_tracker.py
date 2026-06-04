@@ -1,7 +1,7 @@
 """
 Local experiment tracker backed by JSONL files.
 
-No external dependencies — no MLflow, no Weights & Biases. Everything lives
+No external dependencies, no MLflow, no Weights & Biases. Everything lives
 in a single JSONL file: one JSON object per log event. This makes runs
 portable, reproducible, and auditable without any server infrastructure.
 
@@ -136,7 +136,7 @@ class ExperimentTracker:
                     event = json.loads(line)
                     self._apply_event(event)
         except (json.JSONDecodeError, KeyError):
-            pass  # Corrupt file — start fresh
+            pass  # Corrupt file: start fresh
 
     def _apply_event(self, event: dict):
         """Replay a single logged event into the in-memory run registry."""

@@ -4,7 +4,7 @@ Model evaluation and inference benchmarking.
 Supports HuggingFace transformers models for standard NLP tasks and
 provides inference latency/throughput benchmarking for any callable model.
 
-HuggingFace dependencies are imported with graceful fallback — this module
+HuggingFace dependencies are imported with graceful fallback, this module
 can be imported even if transformers/datasets are not installed.
 """
 

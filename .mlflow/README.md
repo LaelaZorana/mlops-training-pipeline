@@ -41,4 +41,4 @@ When DagsHub is activated in `dagshub_demo.py`, runs are pushed to:
 https://dagshub.com/laelazorana/mlops-training-pipeline.mlflow
 ```
 
-The DagsHub MLflow server is provisioned automatically when you import the repo — no server setup required.
+The DagsHub MLflow server is provisioned automatically when you import the repo, no server setup required.

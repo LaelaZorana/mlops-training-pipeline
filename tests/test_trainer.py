@@ -1,5 +1,5 @@
 """
-Tests for pipeline.trainer — Trainer, EpochResult, EvalResult, TrainingHistory.
+Tests for pipeline.trainer: Trainer, EpochResult, EvalResult, TrainingHistory.
 """
 
 import pytest
@@ -86,7 +86,7 @@ def test_loss_decreases_over_epochs_on_simple_task():
 
     first_loss = history.train_results[0].loss
     last_loss = history.train_results[-1].loss
-    # Allow for some variance — just check it hasn't gotten significantly worse
+    # Allow for some variance, just check it hasn't gotten significantly worse
     assert last_loss <= first_loss * 1.5, f"Loss increased too much: {first_loss:.4f} → {last_loss:.4f}"
 
 

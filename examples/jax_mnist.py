@@ -32,9 +32,9 @@ Conceptual JAX training loop:
 4. Loop: for batch in data: state, metrics = train_step(state, batch)
 
 Key difference vs PyTorch:
-  - No model.train() / model.eval() — no mutable state
-  - No optimizer.zero_grad() — gradients are explicit outputs
-  - No loss.backward() — jax.value_and_grad handles this
+  - No model.train() / model.eval(), no mutable state
+  - No optimizer.zero_grad(), gradients are explicit outputs
+  - No loss.backward(), jax.value_and_grad handles this
   - Every function is pure: same inputs → same outputs, always
 """)
     sys.exit(0)
@@ -53,7 +53,7 @@ def init_mlp_params(key, input_dim: int, hidden_dim: int, num_classes: int):
     """
     Initialize MLP parameters.
 
-    JAX doesn't have a global random state — you pass an explicit PRNG key.
+    JAX doesn't have a global random state, you pass an explicit PRNG key.
     jax.random.split creates two new keys from one, enabling independent
     random streams without side effects.
     """
@@ -89,7 +89,7 @@ def cross_entropy_loss(params, x, labels):
     """
     Cross-entropy loss.
 
-    This function is fully pure — no global state, no mutation.
+    This function is fully pure, no global state, no mutation.
     jax.value_and_grad(cross_entropy_loss)(params, x, labels)
     returns (loss_value, grad_wrt_params).
     """
@@ -202,7 +202,7 @@ def main():
             x_batch = x_shuffled[i * BATCH_SIZE:(i + 1) * BATCH_SIZE]
             y_batch = y_shuffled[i * BATCH_SIZE:(i + 1) * BATCH_SIZE]
 
-            # train_step returns new (immutable) state — old params/opt_state unchanged
+            # train_step returns new (immutable) state, old params/opt_state unchanged
             params, opt_state, loss = train_step_jit(params, opt_state, x_batch, y_batch, tx)
             epoch_losses.append(float(loss))
 

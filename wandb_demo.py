@@ -56,7 +56,7 @@ EXPERIMENTS = [
         "initial_train_loss": 2.38,
         "final_train_loss": 0.41,
         "initial_val_loss": 2.42,
-        "final_val_loss": 0.39,   # best val — optimal LR
+        "final_val_loss": 0.39,   # best val: optimal LR
         "final_accuracy": 0.892,
         "samples_per_sec_base": 1435,
     },
@@ -171,7 +171,7 @@ def run_experiment(exp: dict, project: str, entity: str) -> None:
 
 def main() -> None:
     PROJECT = "mlops-training-pipeline-demo"
-    ENTITY = "laelazorana"   # W&B username — create at wandb.ai
+    ENTITY = "laelazorana"   # W&B username: create at wandb.ai
 
     print("=" * 60)
     print("W&B Demo: Learning Rate Comparison")

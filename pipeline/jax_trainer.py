@@ -1,22 +1,22 @@
 """
 JAX training utilities with functional-style training loop.
 
-JAX vs PyTorch — the key mental shift:
+JAX vs PyTorch, the key mental shift:
 ---------------------------------------
 PyTorch is imperative: you mutate model parameters in-place via optimizer.step().
 State lives in Python objects and changes over time.
 
 JAX is purely functional: there is no mutation. Instead, you have a TrainState
 object that holds parameters + optimizer state, and train_step() returns a NEW
-TrainState. The old state is never modified — it's immutable. This is what
+TrainState. The old state is never modified: it's immutable. This is what
 enables JAX's composability: jit, grad, vmap, pmap all work cleanly because
 there are no side effects.
 
 The jax.jit decorator traces the function at first call and compiles it to XLA.
-Subsequent calls use the compiled version — often 10–100x faster than eager.
+Subsequent calls use the compiled version, often 10–100x faster than eager.
 
 Requires: jax>=0.4, flax>=0.7 (or optax for optimizers).
-These are optional — graceful fallback is provided.
+These are optional, graceful fallback is provided.
 """
 
 from dataclasses import dataclass, field
@@ -94,7 +94,7 @@ def create_train_state(
 
     In JAX, model initialization is explicit: you call model.init() with a
     PRNG key and dummy input to get the initial parameter pytree. There's no
-    global random state — every random operation takes a key explicitly.
+    global random state, every random operation takes a key explicitly.
 
     Args:
         model: Flax Module (or any object with .init(key, x) → params).
@@ -116,7 +116,7 @@ def create_train_state(
     if not _OPTAX_AVAILABLE:
         raise ImportError("optax not installed. pip install optax")
 
-    # Initialize PRNG key — JAX requires explicit key management
+    # Initialize PRNG key: JAX requires explicit key management
     key = jax.random.PRNGKey(seed)
 
     # Create dummy input for shape inference
@@ -134,7 +134,7 @@ def create_train_state(
         apply_fn = model
 
     # Create Adam optimizer via optax
-    # optax.adam returns a GradientTransformation — a pure function pair:
+    # optax.adam returns a GradientTransformation, a pure function pair:
     #   init(params) → opt_state
     #   update(grads, opt_state) → (updates, new_opt_state)
     tx = optax.adam(learning_rate)
@@ -157,13 +157,13 @@ def train_step(
     tx: Any = None,
 ) -> Tuple[JAXTrainState, Dict]:
     """
-    Single training step — computes gradients and returns a new state.
+    Single training step: computes gradients and returns a new state.
 
     This function is designed to be wrapped with @jax.jit for compilation.
     The key pattern:
       1. jax.value_and_grad computes both the loss and the gradient in one pass.
       2. optax.apply_updates applies the gradient to the parameters.
-      3. Return a NEW state — nothing is mutated.
+      3. Return a NEW state, nothing is mutated.
 
     Args:
         state: Current JAXTrainState.
@@ -202,7 +202,7 @@ def train_step(
     updates, new_opt_state = tx_optax.update(grads, state.opt_state)
     new_params = optax.apply_updates(state.params, updates)
 
-    # Build new state — old state is not modified
+    # Build new state, old state is not modified
     new_state = state.replace(
         params=new_params,
         opt_state=new_opt_state,
@@ -215,9 +215,9 @@ def train_step(
 
 def eval_step(state: JAXTrainState, batch: Tuple) -> Dict:
     """
-    Evaluation step — no gradient computation, just forward pass + metrics.
+    Evaluation step: no gradient computation, just forward pass + metrics.
 
-    JAX doesn't have a torch.no_grad() equivalent — it's not needed because
+    JAX doesn't have a torch.no_grad() equivalent, it's not needed because
     gradients are only computed when you explicitly call jax.grad or jax.jit.
     A regular forward pass never computes gradients unless you ask.
 
@@ -258,7 +258,7 @@ def train_loop(
 
     Each epoch iterates over train_batches, calling train_step for each.
     Since JAX compiles train_step on first call (via jax.jit), subsequent
-    calls are much faster — the XLA compiler optimizes the full computation graph.
+    calls are much faster, the XLA compiler optimizes the full computation graph.
 
     Args:
         state: Initial JAXTrainState.

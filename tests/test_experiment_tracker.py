@@ -1,5 +1,5 @@
 """
-Tests for pipeline.experiment_tracker — ExperimentTracker, RunRecord, ComparisonReport.
+Tests for pipeline.experiment_tracker: ExperimentTracker, RunRecord, ComparisonReport.
 """
 
 import json

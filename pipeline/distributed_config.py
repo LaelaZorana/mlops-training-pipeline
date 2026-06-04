@@ -38,9 +38,9 @@ class Backend(str, Enum):
 
 
 class MixedPrecision(str, Enum):
-    FP32 = "fp32"    # Full precision — most memory, most stable
-    FP16 = "fp16"    # Half precision — 2x memory savings, may need loss scaling
-    BF16 = "bf16"    # Brain float — same dynamic range as fp32, no loss scaling needed
+    FP32 = "fp32"    # Full precision: most memory, most stable
+    FP16 = "fp16"    # Half precision: 2x memory savings, may need loss scaling
+    BF16 = "bf16"    # Brain float: same dynamic range as fp32, no loss scaling needed
 
 
 @dataclass
@@ -98,7 +98,7 @@ class DistributedConfig:
         if self.gradient_accumulation_steps < 1:
             errors.append("gradient_accumulation_steps must be >= 1")
 
-        # FSDP requires DDP-style multi-process — needs nccl backend
+        # FSDP requires DDP-style multi-process, needs nccl backend
         if self.strategy == DistributedStrategy.FSDP and self.backend == Backend.GLOO:
             errors.append("FSDP requires nccl backend for GPU communication")
 
@@ -203,7 +203,7 @@ class DistributedConfig:
           optimizer_state = 2x params_bytes for Adam (momentum + variance)
           activations = batch_size * seq_len * hidden_dim * 4 bytes (rough)
 
-        This is a rough estimate — actual usage depends on model architecture,
+        This is a rough estimate, actual usage depends on model architecture,
         activation checkpointing, and framework overhead.
 
         Args:
