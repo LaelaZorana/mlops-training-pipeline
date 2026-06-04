@@ -1,6 +1,6 @@
 # mlops-training-pipeline
 
-I kept seeing ML teams reinvent the same training infrastructure from scratch on every new project — experiment tracking bolted on as an afterthought, no standard way to configure distributed training, evaluation logic copy-pasted between repos. I wanted a clean, composable toolkit that handles the common patterns (training loops, experiment tracking, HuggingFace evaluation, JAX support, distributed config) in one place, without locking into the heavyweight MLflow/Weights & Biases setup that's often overkill for research iteration.
+I kept seeing ML teams reinvent the same training infrastructure from scratch on every new project: experiment tracking bolted on as an afterthought, no standard way to configure distributed training, evaluation logic copy-pasted between repos. I wanted a clean, composable toolkit that handles the common patterns (training loops, experiment tracking, HuggingFace evaluation, JAX support, distributed config) in one place, without locking into the heavyweight MLflow/Weights & Biases setup that's often overkill for research iteration.
 
 This is that toolkit. Five focused modules, each doing one thing well, all designed to compose without fighting each other.
 
@@ -8,19 +8,19 @@ This is that toolkit. Five focused modules, each doing one thing well, all desig
 
 ## What It Does
 
-### `Trainer` — Training Loop Abstraction
+### `Trainer`: Training Loop Abstraction
 Wraps a PyTorch model, optimizer, and loss function. `train_epoch()` handles the forward-backward-step loop and returns an `EpochResult` with loss, accuracy, samples/sec, and timing. `fit()` runs the full multi-epoch loop with optional validation and callbacks. Automatically logs to `ExperimentTracker` if you pass one in.
 
-### `ExperimentTracker` — Local JSONL-backed Tracking
+### `ExperimentTracker`: Local JSONL-backed Tracking
 No MLflow server, no W&B account needed. Writes every metric and artifact as a JSON line to a local file. `start_run()` → `log_metrics()` → `end_run()`. `compare_runs()` identifies the best run by any metric. JSONL format means experiments are portable and auditable with a text editor.
 
-### `ModelEvaluator` — HuggingFace Model Evaluation
+### `ModelEvaluator`: HuggingFace Model Evaluation
 `evaluate_hf_model()` loads any HuggingFace model, runs it on a dataset, and returns accuracy, F1, per-sample latency, throughput, and model size. `benchmark_inference()` benchmarks any callable for p50/p95/p99 latency. `compare_models()` gives a recommendation based on accuracy/latency tradeoff.
 
-### `JAXTrainer` — JAX Functional Training Utilities
+### `JAXTrainer`: JAX Functional Training Utilities
 JAX-compatible training primitives that follow the functional paradigm: explicit PRNG keys, immutable `TrainState` updates, `jax.jit`-compiled train steps. Detailed comments explaining the key differences from PyTorch's imperative approach.
 
-### `DistributedConfig` — Distributed Training Configuration
+### `DistributedConfig`: Distributed Training Configuration
 Declarative config for DataParallel, DDP, FSDP, and ModelParallel. `validate()` catches incompatible settings (e.g., DataParallel across nodes). `estimate_memory_gb()` gives per-device memory estimates for sizing your cluster. `to_torch_config()` and `to_jax_config()` produce framework-ready dicts.
 
 ---
@@ -167,7 +167,7 @@ The `dagshub_demo.py` script runs the same 3-experiment LR sweep (1e-3, 1e-4, 5e
 
 MLflow tracking server: `https://dagshub.com/laelazorana/mlops-training-pipeline.mlflow`
 
-Without a DagsHub account, the script falls back to local MLflow — view with `mlflow ui --port 5000`.
+Without a DagsHub account, the script falls back to local MLflow, which you can view with `mlflow ui --port 5000`.
 
 ---
 
@@ -191,7 +191,7 @@ Runs appear at: `https://wandb.ai/laelazorana/mlops-training-pipeline-demo`
 
 ## License
 
-MIT — Laela Zorana
+MIT, Laela Zorana
 
 ---
 
