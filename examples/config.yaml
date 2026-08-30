@@ -1,0 +1,6 @@
+# Example training config for python -m pipeline train --config examples/config.yaml
+epochs: 5
+lr: 0.001
+batch_size: 32
+input_size: 16
+hidden_size: 64
