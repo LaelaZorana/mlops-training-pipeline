@@ -6,7 +6,7 @@ This directory is created by MLflow when running experiments locally (fallback m
 
 | Experiment | Description |
 |---|---|
-| `lr-comparison-resnet18-cifar10` | 3-run LR sweep: 1e-3, 1e-4, 5e-4 on ResNet-18/CIFAR-10 |
+| `synthetic-demo-lr-comparison` | 3-run synthetic LR sweep, 1e-3, 1e-4, 5e-4, generated curves, no model trained |
 
 ## Tracked Metrics (per epoch)
 
@@ -14,7 +14,7 @@ This directory is created by MLflow when running experiments locally (fallback m
 |---|---|
 | `train_loss` | Training cross-entropy loss |
 | `val_loss` | Validation loss |
-| `val_accuracy` | Validation accuracy (0–1) |
+| `val_accuracy` | Validation accuracy, 0 to 1 |
 | `samples_per_sec` | Training throughput |
 | `learning_rate` | Current LR (cosine annealed) |
 
