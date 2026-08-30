@@ -13,7 +13,7 @@ enables JAX's composability: jit, grad, vmap, pmap all work cleanly because
 there are no side effects.
 
 The jax.jit decorator traces the function at first call and compiles it to XLA.
-Subsequent calls use the compiled version, often 10–100x faster than eager.
+Subsequent calls use the compiled version, often 10 to 100x faster than eager.
 
 Requires: jax>=0.4, flax>=0.7 (or optax for optimizers).
 These are optional, graceful fallback is provided.
