@@ -242,7 +242,7 @@ class DistributedConfig:
         activation_bytes = batch_size * sequence_length * 2048 * 4
 
         if self.gradient_checkpointing:
-            # Gradient checkpointing recomputes activations → only O(sqrt(layers)) stored
+            # Gradient checkpointing recomputes activations to only O(sqrt(layers)) stored
             activation_bytes *= 0.1  # rough approximation
 
         total_bytes = model_bytes_per_device + optimizer_bytes + activation_bytes

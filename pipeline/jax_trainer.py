@@ -60,12 +60,12 @@ class JAXTrainState:
         params: Model parameters (pytree of arrays).
         opt_state: Optimizer state (pytree, managed by optax).
         step: Current global training step.
-        apply_fn: The model's apply function (params → outputs).
+        apply_fn: The model's apply function (params to outputs).
     """
     params: Any
     opt_state: Any
     step: int
-    apply_fn: Any  # callable: (params, x) → output
+    apply_fn: Any  # callable: (params, x) to output
 
     def replace(self, **kwargs) -> "JAXTrainState":
         """Return a new JAXTrainState with updated fields (immutable update)."""
@@ -97,7 +97,7 @@ def create_train_state(
     global random state, every random operation takes a key explicitly.
 
     Args:
-        model: Flax Module (or any object with .init(key, x) → params).
+        model: Flax Module (or any object with .init(key, x) to params).
         learning_rate: Learning rate for the Adam optimizer.
         input_shape: Shape of a single input sample (used to create dummy input).
         seed: PRNG seed for parameter initialization.
@@ -135,8 +135,8 @@ def create_train_state(
 
     # Create Adam optimizer via optax
     # optax.adam returns a GradientTransformation, a pure function pair:
-    #   init(params) → opt_state
-    #   update(grads, opt_state) → (updates, new_opt_state)
+    #   init(params) to opt_state
+    #   update(grads, opt_state) to (updates, new_opt_state)
     tx = optax.adam(learning_rate)
     opt_state = tx.init(params)
 
@@ -168,7 +168,7 @@ def train_step(
     Args:
         state: Current JAXTrainState.
         batch: (inputs, labels) tuple.
-        loss_fn: Loss function (inputs, params, labels) → scalar.
+        loss_fn: Loss function (inputs, params, labels) to scalar.
                  Defaults to cross-entropy if None.
         tx: optax optimizer. Required for parameter updates.
 

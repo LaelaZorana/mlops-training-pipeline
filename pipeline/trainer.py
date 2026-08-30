@@ -8,7 +8,7 @@ The Trainer class owns:
   - fit: multi-epoch loop with callbacks and optional tracker integration
 
 Design choices:
-  - No coupling to specific model architectures, just needs model(inputs) → outputs
+  - No coupling to specific model architectures, just needs model(inputs) to outputs
   - Callbacks receive a dict of current state (epoch, loss, accuracy, etc.)
   - Works on CPU by default; put model + data on CUDA before passing in
   - Duck-typing compatible: any object with .parameters() and forward() works

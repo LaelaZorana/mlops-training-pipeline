@@ -34,7 +34,7 @@ EXPERIMENTS = [
             "lr_schedule": "cosine",
             "dataset": "synthetic-demo (no data loaded)",
         },
-        # Convergence profile: high LR → fast early descent, unstable later
+        # Convergence profile: high LR to fast early descent, unstable later
         "initial_train_loss": 2.35,
         "final_train_loss": 0.28,
         "initial_val_loss": 2.40,
@@ -54,7 +54,7 @@ EXPERIMENTS = [
             "lr_schedule": "cosine",
             "dataset": "synthetic-demo (no data loaded)",
         },
-        # Convergence profile: low LR → slow but smooth, best generalisation
+        # Convergence profile: low LR to slow but smooth, best generalisation
         "initial_train_loss": 2.38,
         "final_train_loss": 0.41,
         "initial_val_loss": 2.42,
@@ -74,7 +74,7 @@ EXPERIMENTS = [
             "lr_schedule": "cosine",
             "dataset": "synthetic-demo (no data loaded)",
         },
-        # Convergence profile: middle LR → balanced descent, good generalisation
+        # Convergence profile: middle LR to balanced descent, good generalisation
         "initial_train_loss": 2.36,
         "final_train_loss": 0.33,
         "initial_val_loss": 2.41,

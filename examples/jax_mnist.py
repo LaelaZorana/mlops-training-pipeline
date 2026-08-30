@@ -35,7 +35,7 @@ Key difference vs PyTorch:
   - No model.train() / model.eval(), no mutable state
   - No optimizer.zero_grad(), gradients are explicit outputs
   - No loss.backward(), jax.value_and_grad handles this
-  - Every function is pure: same inputs → same outputs, always
+  - Every function is pure: same inputs to same outputs, always
 """)
     sys.exit(0)
 
@@ -44,8 +44,8 @@ import numpy as np
 
 # ── Simple MLP defined as pure functions ──────────────────────────────────────
 # In JAX, a "model" is just:
-#   init_fn(key, x) → params
-#   apply_fn(params, x) → output
+#   init_fn(key, x) to params
+#   apply_fn(params, x) to output
 #
 # We define this manually here instead of using Flax to show the raw pattern.
 

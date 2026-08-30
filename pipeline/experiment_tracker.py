@@ -33,7 +33,7 @@ class RunRecord:
     Attributes:
         name: Unique run identifier.
         config: Hyperparameter/configuration dict provided at run start.
-        metrics: Dict of metric_name → list of (step, value) tuples.
+        metrics: Dict of metric_name to list of (step, value) tuples.
         artifacts: List of artifact file paths logged during the run.
         start_time: ISO timestamp when the run started.
         end_time: ISO timestamp when the run ended (None if still active).
@@ -73,7 +73,7 @@ class ComparisonReport:
     Attributes:
         run_names: Names of the compared runs.
         best_run: Name of the run with the best primary metric.
-        metric_improvements: Dict mapping run_name → improvement vs baseline (first run).
+        metric_improvements: Dict mapping run_name to improvement vs baseline (first run).
         summary: Human-readable summary string.
     """
     run_names: List[str]
@@ -223,7 +223,7 @@ class ExperimentTracker:
         Log multiple metrics at once.
 
         Args:
-            metrics: Dict of metric_name → value.
+            metrics: Dict of metric_name to value.
             step: Step index shared across all metrics in this call.
         """
         for key, value in metrics.items():
